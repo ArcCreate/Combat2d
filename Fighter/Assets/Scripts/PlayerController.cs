@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements.Experimental;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,7 +16,13 @@ public class PlayerController : MonoBehaviour
     public float groundCheckRadius;
     private bool canJump;
     public int jumpCount = 0;
-    public int jumpLeft;
+    private int jumpLeft;
+    private bool isDashing = false;
+    public float dashTime;
+    public float dashSpeed;
+    public float dashCooldown;
+    private float dashTimeLeft;
+    private float lastDash = -100f;
 
 
     //animation variables
@@ -26,6 +33,7 @@ public class PlayerController : MonoBehaviour
     public Animator animator;
     public Transform groundCheck;
     public LayerMask ground;
+    public TrailRenderer trailRenderer;
 
     // Start is called before the first frame update
     void Start()
@@ -69,20 +77,34 @@ public class PlayerController : MonoBehaviour
         }
 
         //checking if running
-        if (rb.velocity.x != 0)
-        {
-            isRunning = true;
-        }
-        else
-        {
-            isRunning = false;
-        }
+        isRunning = Mathf.Abs(rb.velocity.x) > 0.01f;
     }
 
     private void FixedUpdate()
     {
         ApplyMovement();
+        CheckDash();
         isGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, ground);
+    }
+
+    private void CheckDash()
+    {
+        // checking dashing
+        if (isDashing)
+        {
+            if (dashTimeLeft > 0)
+            {
+                rb.velocity = new Vector2(dashSpeed * movementDirection, 0f);
+                dashTimeLeft -= Time.deltaTime;
+                trailRenderer.emitting = true;
+            }
+
+            if (dashTimeLeft <= 0)
+            {
+                isDashing = false;
+                trailRenderer.emitting = false;
+            }
+        }
     }
 
     //checks for all player inputs
@@ -92,23 +114,37 @@ public class PlayerController : MonoBehaviour
         movementDirection = Input.GetAxisRaw("Horizontal");
 
         //jumping
-        if ((Input.GetButtonDown("Jump") && canJump)
+        if ((Input.GetButtonDown("Jump") && canJump))
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
             jumpLeft--;
-            Debug.Log(jumpLeft);
         }
-    }    
+
+        if ((Input.GetButtonDown("Dash")) && Time.time >= (lastDash + dashCooldown) && movementDirection != 0)
+        {
+            AttemptToDash();
+        }
+    }   
+    
+    private void AttemptToDash()
+    {
+        isDashing = true;
+        dashTimeLeft = dashTime;
+        lastDash = Time.time;
+    }
 
     private void ApplyMovement()
     {
         //moving left and right
-        rb.velocity = new Vector2(movementSpeed*movementDirection, rb.velocity.y);
+        rb.velocity = new Vector2(movementSpeed * movementDirection, rb.velocity.y);
     }
 
     private void Animate()
     {
         animator.SetBool("Running", isRunning);
+        animator.SetBool("isGrounded", isGround);
+        animator.SetFloat("yVelocity", rb.velocity.y);
+        animator.SetBool("isDashing", isDashing);
     }
 
     private void OnDrawGizmos()
