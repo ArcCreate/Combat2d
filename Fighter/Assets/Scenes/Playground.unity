@@ -563,7 +563,7 @@ MonoBehaviour:
   groundCheckRadius: 0.75
   jumpCount: 1
   dashTime: 0.1
-  dashSpeed: 50
+  dashSpeed: 75
   dashCooldown: 1.5
   animator: {fileID: 1298545758}
   groundCheck: {fileID: 1838093054}
@@ -780,8 +780,8 @@ TrailRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.015449524
-        value: 0.5207367
+        time: 0
+        value: 1
         inSlope: 0
         outSlope: 0
         tangentMode: 0

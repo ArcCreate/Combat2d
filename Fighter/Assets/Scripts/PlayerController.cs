@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour
     public float dashCooldown;
     private float dashTimeLeft;
     private float lastDash = -100f;
+    public bool isAttacking1;
+    public bool isAttacking2;
 
 
     //animation variables
@@ -34,6 +36,12 @@ public class PlayerController : MonoBehaviour
     public Transform groundCheck;
     public LayerMask ground;
     public TrailRenderer trailRenderer;
+    public static PlayerController instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -54,7 +62,7 @@ public class PlayerController : MonoBehaviour
         {
             jumpLeft = jumpCount;
         }
-
+        //continuos jump
         if(jumpLeft == 0)
         {
             canJump = false;
@@ -62,6 +70,15 @@ public class PlayerController : MonoBehaviour
         else
         {
             canJump = true;
+        }
+        //faster fall
+        if(rb.velocity.y < 0)
+        {
+            rb.gravityScale = 5;
+        }
+        else
+        {
+            rb.gravityScale = 4;
         }
 
         //direction
@@ -113,6 +130,7 @@ public class PlayerController : MonoBehaviour
         //direction movement
         movementDirection = Input.GetAxisRaw("Horizontal");
 
+
         //jumping
         if ((Input.GetButtonDown("Jump") && canJump))
         {
@@ -120,9 +138,22 @@ public class PlayerController : MonoBehaviour
             jumpLeft--;
         }
 
+        //dashing
         if ((Input.GetButtonDown("Dash")) && Time.time >= (lastDash + dashCooldown) && movementDirection != 0)
         {
             AttemptToDash();
+        }
+
+        //check attacking
+        if(Input.GetButtonDown("Fire1") && !isAttacking1)
+        {
+            isAttacking1 = true;
+            isAttacking2 = false;
+        }
+        if (Input.GetButtonDown("Fire2") && !isAttacking2)
+        {
+            isAttacking2 = true;
+            isAttacking1 = false;
         }
     }   
     
@@ -144,7 +175,6 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("Running", isRunning);
         animator.SetBool("isGrounded", isGround);
         animator.SetFloat("yVelocity", rb.velocity.y);
-        animator.SetBool("isDashing", isDashing);
     }
 
     private void OnDrawGizmos()
