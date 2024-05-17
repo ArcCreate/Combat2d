@@ -7,7 +7,7 @@ using UnityEngine.UIElements.Experimental;
 
 public class PlayerController : MonoBehaviour
 {
-    //public variables
+    // public variables
     public float movementSpeed = 10;
     public float jumpHeight = 16.0f;
     public float groundCheckRadius;
@@ -21,10 +21,12 @@ public class PlayerController : MonoBehaviour
     public bool canMove;
     public bool canAirAttack;
     public float movementDirection;
+    public float attack2Cooldown = 0.5f; // Cooldown time for Attack 2
+    public float attack1Radius, attack2Radius;
 
-    //private variables
+    // private variables
     private int direction = 1;
-    private bool isFacingRight = true;
+    public bool isFacingRight = true;
     private bool isGround;
     private bool canJump;
     private int jumpLeft;
@@ -32,18 +34,24 @@ public class PlayerController : MonoBehaviour
     private float dashTimeLeft;
     private float lastDash = -100f;
     private int airAttack = 1;
+    private float lastAttack2Time = -100f; // Tracks the last time Attack 2 was performed
+    private float attackRadius;
+    private int attackDamage;
 
-
-    //animation variables
+    // animation variables
     private bool isRunning = false;
 
-    //refrences
+    // references
     public Rigidbody2D rb;
     public Animator animator;
     public Transform groundCheck;
     public LayerMask ground;
     public TrailRenderer trailRenderer;
     public static PlayerController instance;
+    public Transform A1Hitbox;
+    public Transform A2Hitbox;
+    public LayerMask damageable;
+    private Transform box;
 
     private void Awake()
     {
@@ -63,15 +71,16 @@ public class PlayerController : MonoBehaviour
         CheckInput();
         Animate();
 
-        //checking parameters
-        //jump
+        // checking parameters
+        // jump
         if (isGround)
         {
             jumpLeft = jumpCount;
             airAttack = 1;
         }
-        //continuos jump
-        if(jumpLeft == 0)
+
+        // continuous jump
+        if (jumpLeft == 0)
         {
             canJump = false;
         }
@@ -80,7 +89,7 @@ public class PlayerController : MonoBehaviour
             canJump = true;
         }
 
-        //direction
+        // direction
         if (canFlip && canMove)
         {
             if (isFacingRight && movementDirection < 0)
@@ -97,7 +106,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        //checking if running
+        // checking if running
         isRunning = Mathf.Abs(rb.velocity.x) > 0.01f;
     }
 
@@ -128,29 +137,30 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //checks for all player inputs
+    // checks for all player inputs
     private void CheckInput()
     {
-        //direction movement
+        // direction movement
         movementDirection = Input.GetAxisRaw("Horizontal");
 
-
-        //jumping
+        // jumping
         if ((Input.GetButtonDown("Jump") && canJump && canMove))
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
             jumpLeft--;
         }
 
-        //dashing
+        // dashing
         if ((Input.GetButtonDown("Dash")) && Time.time >= (lastDash + dashCooldown) && movementDirection != 0)
         {
             AttemptToDash();
         }
 
-        //check attacking
-        if(Input.GetButtonDown("Fire1") && !isAttacking1 && isGround)
+        // check attacking
+        if (Input.GetButtonDown("Fire1") && !isAttacking1 && isGround)
         {
+            box = A1Hitbox;
+            attackRadius = attack1Radius;
             isAttacking1 = true;
             isAttacking2 = false;
         }
@@ -159,13 +169,17 @@ public class PlayerController : MonoBehaviour
             airAttack--;
             canAirAttack = true;
         }
-        if (Input.GetButtonDown("Fire2") && !isAttacking2 && isGround)
+        if (Input.GetButtonDown("Fire2") && !isAttacking2 && isGround && Time.time >= (lastAttack2Time + attack2Cooldown))
         {
+            box = A2Hitbox;
+            attackRadius = attack2Radius;
             isAttacking2 = true;
             isAttacking1 = false;
+            lastAttack2Time = Time.time; // Update the last attack time
+            
         }
-    }   
-    
+    }
+
     private void AttemptToDash()
     {
         canDash = true;
@@ -175,7 +189,7 @@ public class PlayerController : MonoBehaviour
 
     private void ApplyMovement()
     {
-        //moving left and right
+        // moving left and right
         if (canMove)
         {
             rb.velocity = new Vector2(movementSpeed * movementDirection, rb.velocity.y);
@@ -193,7 +207,17 @@ public class PlayerController : MonoBehaviour
         {
             canMove = false;
             canFlip = false;
-            rb.velocity = new Vector2(movementDirection * 5, 0f);
+            rb.velocity = new Vector2(movementDirection * 0, 0f);
+        }
+    }
+
+    public void CheckAttackHitbox(int dg)
+    {
+        Collider2D[] detectedObjects = Physics2D.OverlapCircleAll(box.position, attackRadius, damageable);
+
+        foreach (Collider2D obj in detectedObjects)
+        {
+            obj.transform.SendMessage("Damaged", dg);
         }
     }
 
@@ -208,5 +232,7 @@ public class PlayerController : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        Gizmos.DrawWireSphere(A2Hitbox.position, attack2Radius);
+        Gizmos.DrawWireSphere(A1Hitbox.position, attack1Radius);
     }
 }

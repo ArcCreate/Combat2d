@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Dummy
   layers:
   - Default
   - TransparentFX
@@ -12,9 +13,9 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
-  - 
-  - 
+  - Damageble
+  - Dead
+  - Player
   - 
   - 
   - 
@@ -46,6 +47,9 @@ TagManager:
     locked: 0
   - name: Platforms
     uniqueID: 3085206287
+    locked: 0
+  - name: Dummy
+    uniqueID: 1389595001
     locked: 0
   - name: Players
     uniqueID: 1834026737
