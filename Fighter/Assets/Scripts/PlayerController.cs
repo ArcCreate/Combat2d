@@ -7,31 +7,38 @@ using UnityEngine.UIElements.Experimental;
 
 public class PlayerController : MonoBehaviour
 {
-    //variables
-    private float movementDirection; 
+    //public variables
     public float movementSpeed = 10;
-    private bool isFacingRight = true;
     public float jumpHeight = 16.0f;
-    private bool isGround;
     public float groundCheckRadius;
-    private bool canJump;
     public int jumpCount = 0;
-    private int jumpLeft;
-    private bool isDashing = false;
     public float dashTime;
     public float dashSpeed;
     public float dashCooldown;
-    private float dashTimeLeft;
-    private float lastDash = -100f;
     public bool isAttacking1;
     public bool isAttacking2;
+    public bool canFlip;
+    public bool canMove;
+    public bool canAirAttack;
+    public float movementDirection;
+
+    //private variables
+    private int direction = 1;
+    private bool isFacingRight = true;
+    private bool isGround;
+    private bool canJump;
+    private int jumpLeft;
+    private bool canDash = false;
+    private float dashTimeLeft;
+    private float lastDash = -100f;
+    private int airAttack = 1;
 
 
     //animation variables
     private bool isRunning = false;
 
     //refrences
-    private Rigidbody2D rb;
+    public Rigidbody2D rb;
     public Animator animator;
     public Transform groundCheck;
     public LayerMask ground;
@@ -61,6 +68,7 @@ public class PlayerController : MonoBehaviour
         if (isGround)
         {
             jumpLeft = jumpCount;
+            airAttack = 1;
         }
         //continuos jump
         if(jumpLeft == 0)
@@ -71,26 +79,22 @@ public class PlayerController : MonoBehaviour
         {
             canJump = true;
         }
-        //faster fall
-        if(rb.velocity.y < 0)
-        {
-            rb.gravityScale = 5;
-        }
-        else
-        {
-            rb.gravityScale = 4;
-        }
 
         //direction
-        if (isFacingRight && movementDirection < 0)
+        if (canFlip && canMove)
         {
-            isFacingRight = !isFacingRight;
-            transform.Rotate(0.0f, 180.0f, 0.0f);
-        }
-        else if (!isFacingRight && movementDirection > 0)
-        {
-            isFacingRight = !isFacingRight;
-            transform.Rotate(0.0f, 180.0f, 0.0f);
+            if (isFacingRight && movementDirection < 0)
+            {
+                direction = -1;
+                isFacingRight = !isFacingRight;
+                transform.Rotate(0.0f, 180.0f, 0.0f);
+            }
+            else if (!isFacingRight && movementDirection > 0)
+            {
+                direction = 1;
+                isFacingRight = !isFacingRight;
+                transform.Rotate(0.0f, 180.0f, 0.0f);
+            }
         }
 
         //checking if running
@@ -107,18 +111,18 @@ public class PlayerController : MonoBehaviour
     private void CheckDash()
     {
         // checking dashing
-        if (isDashing)
+        if (canDash && canMove)
         {
             if (dashTimeLeft > 0)
             {
-                rb.velocity = new Vector2(dashSpeed * movementDirection, 0f);
+                rb.velocity = new Vector2(dashSpeed * direction, 0f);
                 dashTimeLeft -= Time.deltaTime;
                 trailRenderer.emitting = true;
             }
 
             if (dashTimeLeft <= 0)
             {
-                isDashing = false;
+                canDash = false;
                 trailRenderer.emitting = false;
             }
         }
@@ -132,7 +136,7 @@ public class PlayerController : MonoBehaviour
 
 
         //jumping
-        if ((Input.GetButtonDown("Jump") && canJump))
+        if ((Input.GetButtonDown("Jump") && canJump && canMove))
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
             jumpLeft--;
@@ -145,12 +149,17 @@ public class PlayerController : MonoBehaviour
         }
 
         //check attacking
-        if(Input.GetButtonDown("Fire1") && !isAttacking1)
+        if(Input.GetButtonDown("Fire1") && !isAttacking1 && isGround)
         {
             isAttacking1 = true;
             isAttacking2 = false;
         }
-        if (Input.GetButtonDown("Fire2") && !isAttacking2)
+        else if (Input.GetButtonDown("Fire1") && !isAttacking1 && !isGround && airAttack == 1)
+        {
+            airAttack--;
+            canAirAttack = true;
+        }
+        if (Input.GetButtonDown("Fire2") && !isAttacking2 && isGround)
         {
             isAttacking2 = true;
             isAttacking1 = false;
@@ -159,7 +168,7 @@ public class PlayerController : MonoBehaviour
     
     private void AttemptToDash()
     {
-        isDashing = true;
+        canDash = true;
         dashTimeLeft = dashTime;
         lastDash = Time.time;
     }
@@ -167,7 +176,25 @@ public class PlayerController : MonoBehaviour
     private void ApplyMovement()
     {
         //moving left and right
-        rb.velocity = new Vector2(movementSpeed * movementDirection, rb.velocity.y);
+        if (canMove)
+        {
+            rb.velocity = new Vector2(movementSpeed * movementDirection, rb.velocity.y);
+        }
+    }
+
+    public void MovingWhileAttack()
+    {
+        if (!canMove)
+        {
+            canMove = true;
+            canFlip = true;
+        }
+        else
+        {
+            canMove = false;
+            canFlip = false;
+            rb.velocity = new Vector2(movementDirection * 5, 0f);
+        }
     }
 
     private void Animate()
@@ -175,6 +202,7 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("Running", isRunning);
         animator.SetBool("isGrounded", isGround);
         animator.SetFloat("yVelocity", rb.velocity.y);
+        animator.SetBool("AirAttack", canAirAttack);
     }
 
     private void OnDrawGizmos()

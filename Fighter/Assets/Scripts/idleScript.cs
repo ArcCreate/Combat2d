@@ -16,19 +16,21 @@ public class idleScript : StateMachineBehaviour
         if (PlayerController.instance.isAttacking1)
         {
             PlayerController.instance.animator.Play("Sand_A1");
+            PlayerController.instance.isAttacking1 = false;
+
         }
-        else if (PlayerController.instance.isAttacking2)
+        if (PlayerController.instance.isAttacking2)
         {
             PlayerController.instance.animator.Play("Sand_A3");
+            PlayerController.instance.isAttacking2 = false;
         }
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-       PlayerController.instance.isAttacking1 = false;
-       PlayerController.instance.isAttacking2 = false;
-    }
+    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    //{
+    //
+    //}
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
