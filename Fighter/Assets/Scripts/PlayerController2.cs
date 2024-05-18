@@ -40,7 +40,7 @@ public class PlayerController2 : MonoBehaviour
 
     // references
     public Rigidbody2D rb;
-    //public Animator animator;
+    public Animator animator;
     public Transform groundCheck;
     public LayerMask ground;
     public TrailRenderer trailRenderer;
@@ -246,10 +246,10 @@ public class PlayerController2 : MonoBehaviour
 
     private void Animate()
     {
-        /*animator.SetBool("Running", isRunning);
+        animator.SetBool("Running", isRunning);
         animator.SetBool("isGrounded", isGround);
         animator.SetFloat("yVelocity", rb.velocity.y);
-        animator.SetBool("AirAttack", canAirAttack);*/
+        animator.SetBool("AirAttack", canAirAttack);
     }
 
     private void OnDrawGizmos()
