@@ -5,6 +5,7 @@ using UnityEngine;
 public class attackTransitionScript : StateMachineBehaviour
 {
     public string nextAttack;
+    public int playerNumber;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     //{
@@ -14,16 +15,37 @@ public class attackTransitionScript : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (PlayerController.instance.isAttacking1)
+        switch (playerNumber)
         {
-            PlayerController.instance.animator.Play(nextAttack);
-            PlayerController.instance.isAttacking1 = false;
+            case 1:
+                if (PlayerController.instance.isAttacking1)
+                {
+                    PlayerController.instance.animator.Play(nextAttack);
+                    PlayerController.instance.isAttacking1 = false;
 
-        }
-        if (PlayerController.instance.isAttacking2)
-        {
-            PlayerController.instance.animator.Play("Sand_A3");
-            PlayerController.instance.isAttacking2 = false;
+                }
+                if (PlayerController.instance.isAttacking2)
+                {
+                    PlayerController.instance.animator.Play("Sand_A3");
+                    PlayerController.instance.isAttacking2 = false;
+                }
+                break;
+            case 2:
+                if (PlayerController2.instance.isAttacking1)
+                {
+                    PlayerController2.instance.animator.Play(nextAttack);
+                    PlayerController2.instance.isAttacking1 = false;
+
+                }
+                if (PlayerController2.instance.isAttacking2)
+                {
+                    PlayerController2.instance.animator.Play("Fire_A3");
+                    PlayerController2.instance.isAttacking2 = false;
+                }
+                break;
+            default:
+                Debug.Log("Player number not set");
+                break;
         }
 
     }

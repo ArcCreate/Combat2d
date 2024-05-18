@@ -168,6 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8820cc359dad054c84f4c6611a21d43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerNumber: 2
 --- !u!70 &100581617
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -1559,6 +1560,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8820cc359dad054c84f4c6611a21d43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerNumber: 1
 --- !u!70 &1298545760
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -6324,9 +6326,9 @@ SceneRoots:
   - {fileID: 100581621}
   - {fileID: 488898599}
   - {fileID: 1086217069}
-  - {fileID: 4033580807716725611}
   - {fileID: 1452180922}
   - {fileID: 1766873694}
   - {fileID: 110941803}
   - {fileID: 1468275650}
+  - {fileID: 4033580807716725611}
   - {fileID: 1365768311}

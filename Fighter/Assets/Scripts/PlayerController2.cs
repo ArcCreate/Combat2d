@@ -158,37 +158,39 @@ public class PlayerController2 : MonoBehaviour
     private void CheckInput()
     {
         // direction movement
-        movementDirection = Input.GetAxisRaw("Horizontal_1");
+        movementDirection = Input.GetAxisRaw("Horizontal");
 
         // jumping
-        if ((Input.GetButtonDown("Jump_1") && canMove && canJump))
+        if ((Input.GetButtonDown("Jump_2") && canMove && canJump))
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
             jumpLeft--;
         }
 
         // dashing
-        if ((Input.GetButtonDown("Dash_1")) && Time.time >= (lastDash + dashCooldown) && movementDirection != 0)
+        if ((Input.GetButtonDown("Dash_2")) && Time.time >= (lastDash + dashCooldown) && movementDirection != 0)
         {
             AttemptToDash();
         }
 
         // check attacking
-        if (Input.GetButtonDown("Fire1_1") && !isAttacking1 && isGround)
+        if (Input.GetButtonDown("Fire1_2") && !isAttacking1 && isGround)
         {
+            Debug.Log("Attack1");
             box = A1Hitbox;
             attackRadius = attack1Radius;
             isAttacking1 = true;
             isAttacking2 = false;
+            Debug.Log(isAttacking1 + ", " + isAttacking2);
         }
-        else if (Input.GetButtonDown("Fire1_1") && !isAttacking1 && !isGround && airAttack == 1)
+        else if (Input.GetButtonDown("Fire1_2") && !isAttacking1 && !isGround && airAttack == 1)
         {
             airAttack--;
             canAirAttack = true;
             attackRadius = airAttackRadius;
             box = AAHitbox;
         }
-        if (Input.GetButtonDown("Fire2_1") && !isAttacking2 && isGround && Time.time >= (lastAttack2Time + attack2Cooldown))
+        if (Input.GetButtonDown("Fire2_2") && !isAttacking2 && isGround && Time.time >= (lastAttack2Time + attack2Cooldown))
         {
             box = A2Hitbox;
             attackRadius = attack2Radius;

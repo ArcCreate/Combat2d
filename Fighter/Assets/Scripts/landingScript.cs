@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+
 
 public class landingScript : StateMachineBehaviour
 {
+    public int playerNumber;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     //{
@@ -19,9 +22,22 @@ public class landingScript : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (PlayerController.instance.isGround)
-        {
-            PlayerController.instance.landDust.Play();
+        switch (playerNumber) {
+            case 1:
+                if (PlayerController.instance.isGround)
+                {
+                    PlayerController.instance.landDust.Play();
+                }
+                break;
+            case 2:
+                if (PlayerController2.instance.isGround)
+                {
+                    PlayerController2.instance.landDust.Play();
+                }
+                break;
+            default:
+                Debug.Log("Player number not set");
+                break;
         }
     }
 
