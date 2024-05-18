@@ -1,9 +1,7 @@
+using Cinemachine;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements.Experimental;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,7 +9,7 @@ public class PlayerController : MonoBehaviour
     public float movementSpeed = 10;
     public float jumpHeight = 16.0f;
     public float groundCheckRadius;
-    public int jumpCount = 0;
+    public int jumpCount;
     public float dashTime;
     public float dashSpeed;
     public float dashCooldown;
@@ -22,12 +20,12 @@ public class PlayerController : MonoBehaviour
     public bool canAirAttack;
     public float movementDirection;
     public float attack2Cooldown = 0.5f; // Cooldown time for Attack 2
-    public float attack1Radius, attack2Radius;
+    public float attack1Radius, attack2Radius, airAttackRadius;
 
     // private variables
     private int direction = 1;
     public bool isFacingRight = true;
-    private bool isGround;
+    public bool isGround;
     private bool canJump;
     private int jumpLeft;
     private bool canDash = false;
@@ -48,10 +46,12 @@ public class PlayerController : MonoBehaviour
     public LayerMask ground;
     public TrailRenderer trailRenderer;
     public static PlayerController instance;
-    public Transform A1Hitbox;
-    public Transform A2Hitbox;
+    public Transform A1Hitbox, A2Hitbox, AAHitbox;
     public LayerMask damageable;
     private Transform box;
+    public ParticleSystem dust;
+    public ParticleSystem landDust;
+    public Slider slider;
 
     private void Awake()
     {
@@ -63,6 +63,13 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         jumpLeft = jumpCount;
+
+        // Initialize the slider
+        if (slider != null)
+        {
+            slider.maxValue = 1;
+            slider.value = 1;
+        }
     }
 
     // Update is called once per frame
@@ -80,13 +87,13 @@ public class PlayerController : MonoBehaviour
         }
 
         // continuous jump
-        if (jumpLeft == 0)
+        if (jumpLeft > 0)
         {
-            canJump = false;
+            canJump = true;
         }
         else
         {
-            canJump = true;
+            canJump = false;
         }
 
         // direction
@@ -97,17 +104,28 @@ public class PlayerController : MonoBehaviour
                 direction = -1;
                 isFacingRight = !isFacingRight;
                 transform.Rotate(0.0f, 180.0f, 0.0f);
+                if (isGround)
+                {
+                    dust.Play();
+                }
             }
             else if (!isFacingRight && movementDirection > 0)
             {
                 direction = 1;
                 isFacingRight = !isFacingRight;
                 transform.Rotate(0.0f, 180.0f, 0.0f);
+                if (isGround)
+                {
+                    dust.Play();
+                }
             }
         }
 
         // checking if running
         isRunning = Mathf.Abs(rb.velocity.x) > 0.01f;
+
+        // Update the slider
+        UpdateDashSlider();
     }
 
     private void FixedUpdate()
@@ -144,7 +162,7 @@ public class PlayerController : MonoBehaviour
         movementDirection = Input.GetAxisRaw("Horizontal");
 
         // jumping
-        if ((Input.GetButtonDown("Jump") && canJump && canMove))
+        if ((Input.GetButtonDown("Jump") && canMove && canJump))
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
             jumpLeft--;
@@ -168,6 +186,8 @@ public class PlayerController : MonoBehaviour
         {
             airAttack--;
             canAirAttack = true;
+            attackRadius = airAttackRadius;
+            box = AAHitbox;
         }
         if (Input.GetButtonDown("Fire2") && !isAttacking2 && isGround && Time.time >= (lastAttack2Time + attack2Cooldown))
         {
@@ -176,7 +196,6 @@ public class PlayerController : MonoBehaviour
             isAttacking2 = true;
             isAttacking1 = false;
             lastAttack2Time = Time.time; // Update the last attack time
-            
         }
     }
 
@@ -219,6 +238,11 @@ public class PlayerController : MonoBehaviour
         {
             obj.transform.SendMessage("Damaged", dg);
         }
+
+        if(detectedObjects.Length > 0)
+        {
+            CameraShake.instance.Shake(1f, 0.25f);
+        }
     }
 
     private void Animate()
@@ -234,5 +258,23 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         Gizmos.DrawWireSphere(A2Hitbox.position, attack2Radius);
         Gizmos.DrawWireSphere(A1Hitbox.position, attack1Radius);
+        Gizmos.DrawWireSphere(AAHitbox.position, airAttackRadius);
+    }
+
+    private void UpdateDashSlider()
+    {
+        float timeSinceLastDash = Time.time - lastDash;
+        float cooldownProgress = Mathf.Clamp(dashCooldown - timeSinceLastDash, 0, dashCooldown);
+        slider.value = 1 - (cooldownProgress / dashCooldown);
+
+        // Show the slider only when dash is on cooldown
+        if (cooldownProgress != 0)
+        {
+            slider.gameObject.SetActive(true);
+        }
+        else
+        {
+            slider.gameObject.SetActive(false);
+        }
     }
 }
