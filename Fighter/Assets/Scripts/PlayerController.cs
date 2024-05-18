@@ -241,7 +241,7 @@ public class PlayerController : MonoBehaviour
 
         if(detectedObjects.Length > 0)
         {
-            CameraShake.instance.Shake(1f, 0.25f);
+            CameraShake.instance.Shake(dg/2.0f, 0.25f);
         }
     }
 
