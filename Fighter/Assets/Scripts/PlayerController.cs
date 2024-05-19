@@ -277,6 +277,7 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("isGrounded", isGround);
         animator.SetFloat("yVelocity", rb.velocity.y);
         animator.SetBool("AirAttack", canAirAttack);
+        animator.SetBool("Hit", isKnockedBack);
     }
 
     private void OnDrawGizmos()
@@ -314,6 +315,24 @@ public class PlayerController : MonoBehaviour
 
         // Set isKnockedBack flag to true
         isKnockedBack = true;
+        if (PlayerController2.instance.direction < 0 && !isFacingRight)
+        {
+            isFacingRight = !isFacingRight;
+            transform.Rotate(0.0f, 180.0f, 0.0f);
+            if (isGround)
+            {
+                dust.Play();
+            }
+        }
+        else if (PlayerController2.instance.direction> 0 && isFacingRight)
+        {
+            isFacingRight = !isFacingRight;
+            transform.Rotate(0.0f, 180.0f, 0.0f);
+            if (isGround)
+            {
+                dust.Play();
+            }
+        }
 
         // Reset isKnockedBack flag after a certain duration
         StartCoroutine(ResetKnockback());
