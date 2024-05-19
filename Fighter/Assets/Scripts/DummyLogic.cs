@@ -6,6 +6,8 @@ public class DummyLogic : MonoBehaviour
 {
     //refrences
     public PlayerController pc;
+    public PlayerController2 pc2;
+
     public Animator animator;
 
     private bool isFacingRight = false;

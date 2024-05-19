@@ -19,7 +19,7 @@ public class PlayerController2 : MonoBehaviour
     public bool canAirAttack;
     public float movementDirection;
     public float attack2Cooldown = 0.5f; // Cooldown time for Attack 2
-    public float attack1Radius, attack2Radius, airAttackRadius;
+    public float attack1Radius, attack2Radius, airAttackRadius, attack3Radius;
 
     // private variables
     private int direction = 1;
@@ -45,7 +45,7 @@ public class PlayerController2 : MonoBehaviour
     public LayerMask ground;
     public TrailRenderer trailRenderer;
     public static PlayerController2 instance;
-    public Transform A1Hitbox, A2Hitbox, AAHitbox;
+    public Transform A1Hitbox, A2Hitbox, AAHitbox, A3Hitbox;
     public LayerMask damageable;
     private Transform box;
     public ParticleSystem dust;
@@ -176,12 +176,10 @@ public class PlayerController2 : MonoBehaviour
         // check attacking
         if (Input.GetButtonDown("Fire1_2") && !isAttacking1 && isGround)
         {
-            Debug.Log("Attack1");
             box = A1Hitbox;
             attackRadius = attack1Radius;
             isAttacking1 = true;
             isAttacking2 = false;
-            Debug.Log(isAttacking1 + ", " + isAttacking2);
         }
         else if (Input.GetButtonDown("Fire1_2") && !isAttacking1 && !isGround && airAttack == 1)
         {
@@ -246,6 +244,15 @@ public class PlayerController2 : MonoBehaviour
         }
     }
 
+    public void chainedHitbox()
+    {
+        Debug.Log("chain function");
+        box = A2Hitbox;
+        attackRadius = attack2Radius;
+        isAttacking1 = true;
+        isAttacking2 = false;
+    }
+
     private void Animate()
     {
         animator.SetBool("Running", isRunning);
@@ -259,6 +266,7 @@ public class PlayerController2 : MonoBehaviour
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         Gizmos.DrawWireSphere(A2Hitbox.position, attack2Radius);
         Gizmos.DrawWireSphere(A1Hitbox.position, attack1Radius);
+        Gizmos.DrawWireSphere(A3Hitbox.position, attack3Radius);
         Gizmos.DrawWireSphere(AAHitbox.position, airAttackRadius);
     }
 
