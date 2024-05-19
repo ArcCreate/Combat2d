@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,7 +23,7 @@ public class PlayerController2 : MonoBehaviour
     public float attack1Radius, attack2Radius, airAttackRadius, attack3Radius;
 
     // private variables
-    private int direction = 1;
+    public int direction = 1;
     public bool isFacingRight = true;
     public bool isGround;
     private bool canJump;
@@ -34,6 +35,7 @@ public class PlayerController2 : MonoBehaviour
     private float lastAttack2Time = -100f; // Tracks the last time Attack 2 was performed
     private float attackRadius;
     private int attackDamage;
+    private bool isKnockedBack;
 
     // animation variables
     private bool isRunning = false;
@@ -207,10 +209,13 @@ public class PlayerController2 : MonoBehaviour
 
     private void ApplyMovement()
     {
-        // moving left and right
-        if (canMove)
+        if (!isKnockedBack)
         {
-            rb.velocity = new Vector2(movementSpeed * movementDirection, rb.velocity.y);
+            // moving left and right
+            if (canMove)
+            {
+                rb.velocity = new Vector2(movementSpeed * movementDirection, rb.velocity.y);
+            }
         }
     }
 
@@ -232,13 +237,21 @@ public class PlayerController2 : MonoBehaviour
     public void CheckAttackHitbox(int dg)
     {
         Collider2D[] detectedObjects = Physics2D.OverlapCircleAll(box.position, attackRadius, damageable);
+        int me = 0;
 
         foreach (Collider2D obj in detectedObjects)
         {
-            obj.transform.SendMessage("Damaged", dg);
+            if (obj.gameObject != this.gameObject)
+            {
+                obj.transform.SendMessage("Damaged", dg);
+            }
+            else
+            {
+                me++;
+            }
         }
 
-        if (detectedObjects.Length > 0)
+        if (detectedObjects.Length > 0+me)
         {
             CameraShake.instance.Shake(dg / 2.0f, 0.25f);
         }
@@ -285,5 +298,30 @@ public class PlayerController2 : MonoBehaviour
         {
             slider.gameObject.SetActive(false);
         }
+    }
+
+    public void Damaged(int damage)
+    {
+        Debug.Log("Player 2 is hit");
+        // Calculate knockback direction
+        Vector2 knockbackDirection = (transform.position - PlayerController.instance.transform.position).normalized;
+
+        // Apply knockback force
+        rb.velocity = new Vector2(damage * 2 * knockbackDirection.x, 5f);
+
+        // Set isKnockedBack flag to true
+        isKnockedBack = true;
+
+        // Reset isKnockedBack flag after a certain duration
+        StartCoroutine(ResetKnockback());
+    }
+
+    private IEnumerator ResetKnockback()
+    {
+        // Wait for a duration before resetting isKnockedBack flag
+        yield return new WaitForSeconds(0.5f); // Adjust the duration as needed
+
+        // Reset isKnockedBack flag
+        isKnockedBack = false;
     }
 }

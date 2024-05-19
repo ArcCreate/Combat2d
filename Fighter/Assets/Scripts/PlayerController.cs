@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,10 +21,10 @@ public class PlayerController : MonoBehaviour
     public bool canAirAttack;
     public float movementDirection;
     public float attack2Cooldown = 0.5f; // Cooldown time for Attack 2
-    public float attack1Radius, attack2Radius, airAttackRadius;
+    public float attack1Radius, attack2Radius, airAttackRadius, attack3Radius;
 
     // private variables
-    private int direction = 1;
+    public int direction = 1;
     public bool isFacingRight = true;
     public bool isGround;
     private bool canJump;
@@ -31,9 +33,10 @@ public class PlayerController : MonoBehaviour
     private float dashTimeLeft;
     private float lastDash = -100f;
     private int airAttack = 1;
-    private float lastAttack2Time = -100f; // Tracks the last time Attack 2 was performed
+    private float lastAttack3Time = -100f; // Tracks the last time Attack 2 was performed
     private float attackRadius;
     private int attackDamage;
+    private bool isKnockedBack;
 
     // animation variables
     private bool isRunning = false;
@@ -45,7 +48,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask ground;
     public TrailRenderer trailRenderer;
     public static PlayerController instance;
-    public Transform A1Hitbox, A2Hitbox, AAHitbox;
+    public Transform A1Hitbox, A2Hitbox, AAHitbox, A3hitbox;
     public LayerMask damageable;
     private Transform box;
     public ParticleSystem dust;
@@ -192,13 +195,13 @@ public class PlayerController : MonoBehaviour
             attackRadius = airAttackRadius;
             box = AAHitbox;
         }
-        if (Input.GetButtonDown("Fire2_1") && !isAttacking2 && isGround && Time.time >= (lastAttack2Time + attack2Cooldown))
+        if (Input.GetButtonDown("Fire2_1") && !isAttacking2 && isGround && Time.time >= (lastAttack3Time + attack2Cooldown))
         {
-            box = A2Hitbox;
-            attackRadius = attack2Radius;
+            box = A3hitbox;
+            attackRadius = attack3Radius;
             isAttacking2 = true;
             isAttacking1 = false;
-            lastAttack2Time = Time.time; // Update the last attack time
+            lastAttack3Time = Time.time; // Update the last attack time
         }
     }
 
@@ -211,10 +214,13 @@ public class PlayerController : MonoBehaviour
 
     private void ApplyMovement()
     {
-        // moving left and right
-        if (canMove)
+        if (!isKnockedBack)
         {
-            rb.velocity = new Vector2(movementSpeed * movementDirection, rb.velocity.y);
+            // moving left and right
+            if (canMove)
+            {
+                rb.velocity = new Vector2(movementSpeed * movementDirection, rb.velocity.y);
+            }
         }
     }
 
@@ -236,16 +242,33 @@ public class PlayerController : MonoBehaviour
     public void CheckAttackHitbox(int dg)
     {
         Collider2D[] detectedObjects = Physics2D.OverlapCircleAll(box.position, attackRadius, damageable);
+        int me = 0;
 
         foreach (Collider2D obj in detectedObjects)
         {
-            obj.transform.SendMessage("Damaged", dg);
+            if (obj.gameObject != this.gameObject)
+            {
+                obj.transform.SendMessage("Damaged", dg);
+            }
+            else
+            {
+                me++;
+            }
         }
 
-        if (detectedObjects.Length > 0)
+        if (detectedObjects.Length > 0+me)
         {
             CameraShake.instance.Shake(dg / 2.0f, 0.25f);
         }
+    }
+
+    public void chainedHitbox()
+    {
+        Debug.Log("chain function");
+        box = A2Hitbox;
+        attackRadius = attack2Radius;
+        isAttacking1 = true;
+        isAttacking2 = false;
     }
 
     private void Animate()
@@ -262,6 +285,7 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireSphere(A2Hitbox.position, attack2Radius);
         Gizmos.DrawWireSphere(A1Hitbox.position, attack1Radius);
         Gizmos.DrawWireSphere(AAHitbox.position, airAttackRadius);
+        Gizmos.DrawWireSphere(A3hitbox.position, attack3Radius);
     }
 
     private void UpdateDashSlider()
@@ -279,5 +303,28 @@ public class PlayerController : MonoBehaviour
         {
             slider.gameObject.SetActive(false);
         }
+    }
+
+    public void Damaged(int damage)
+    {
+        Debug.Log("Player 1 is hit");
+
+        // Apply knockback force
+        rb.velocity = new Vector2(damage * 2 * PlayerController2.instance.direction, 5f);
+
+        // Set isKnockedBack flag to true
+        isKnockedBack = true;
+
+        // Reset isKnockedBack flag after a certain duration
+        StartCoroutine(ResetKnockback());
+    }
+
+    private IEnumerator ResetKnockback()
+    {
+        // Wait for a duration before resetting isKnockedBack flag
+        yield return new WaitForSeconds(0.5f); // Adjust the duration as needed
+
+        // Reset isKnockedBack flag
+        isKnockedBack = false;
     }
 }
