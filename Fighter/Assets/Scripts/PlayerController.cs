@@ -172,6 +172,10 @@ public class PlayerController : MonoBehaviour
         {
             AttemptToDash();
         }
+        else if (Input.GetButtonDown("Dash_1"))
+        {
+            Debug.Log("trying to dash");
+        }
 
         // check attacking
         if (Input.GetButtonDown("Fire1_1") && !isAttacking1 && isGround)
