@@ -37,7 +37,7 @@ public class animationFunctions : MonoBehaviour
                 {
                     PlayerController.instance.canMove = false;
                     PlayerController.instance.canFlip = false;
-                    PlayerController.instance.rb.velocity = new Vector2(PlayerController2.instance.movementDirection * 15, 0f);
+                    PlayerController.instance.rb.velocity = new Vector2(PlayerController.instance.movementDirection * 15, 0f);
                 }
                 break;
             case 2:

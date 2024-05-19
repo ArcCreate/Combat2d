@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     public bool canMove;
     public bool canAirAttack;
     public float movementDirection;
-    public float attack2Cooldown = 0.5f; // Cooldown time for Attack 2
+    public float attack3Cooldown = 0.5f; // Cooldown time for Attack 3
     public float attack1Radius, attack2Radius, airAttackRadius, attack3Radius;
 
     // private variables
@@ -33,10 +33,11 @@ public class PlayerController : MonoBehaviour
     private float dashTimeLeft;
     private float lastDash = -100f;
     private int airAttack = 1;
-    private float lastAttack3Time = -100f; // Tracks the last time Attack 2 was performed
+    private float lastAttack3Time = -100f; // Tracks the last time Attack 3 was performed
     private float attackRadius;
     private int attackDamage;
     private bool isKnockedBack;
+    private int life;
 
     // animation variables
     private bool isRunning = false;
@@ -99,7 +100,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // direction
-        if (canFlip && canMove)
+        if (canFlip)
         {
             if (isFacingRight && movementDirection < 0)
             {
@@ -175,10 +176,6 @@ public class PlayerController : MonoBehaviour
         {
             AttemptToDash();
         }
-        else if (Input.GetButtonDown("Dash_1"))
-        {
-            Debug.Log("trying to dash");
-        }
 
         // check attacking
         if (Input.GetButtonDown("Fire1_1") && !isAttacking1 && isGround)
@@ -195,7 +192,7 @@ public class PlayerController : MonoBehaviour
             attackRadius = airAttackRadius;
             box = AAHitbox;
         }
-        if (Input.GetButtonDown("Fire2_1") && !isAttacking2 && isGround && Time.time >= (lastAttack3Time + attack2Cooldown))
+        if (Input.GetButtonDown("Fire2_1") && !isAttacking2 && isGround && Time.time >= (lastAttack3Time + attack3Cooldown))
         {
             box = A3hitbox;
             attackRadius = attack3Radius;
@@ -249,6 +246,11 @@ public class PlayerController : MonoBehaviour
             if (obj.gameObject != this.gameObject)
             {
                 obj.transform.SendMessage("Damaged", dg);
+
+                if (!isGround)
+                {
+                    jumpLeft++;
+                }
             }
             else
             {
@@ -264,7 +266,6 @@ public class PlayerController : MonoBehaviour
 
     public void chainedHitbox()
     {
-        Debug.Log("chain function");
         box = A2Hitbox;
         attackRadius = attack2Radius;
         isAttacking1 = true;
@@ -308,13 +309,13 @@ public class PlayerController : MonoBehaviour
 
     public void Damaged(int damage)
     {
-        Debug.Log("Player 1 is hit");
-
+        life += damage;
         // Apply knockback force
-        rb.velocity = new Vector2(damage * 2 * PlayerController2.instance.direction, 5f);
+        rb.velocity = new Vector2(life % 100 * PlayerController2.instance.direction, life % 100);
 
         // Set isKnockedBack flag to true
         isKnockedBack = true;
+        this.gameObject.GetComponent<SpriteRenderer>().color = Color.grey;
         if (PlayerController2.instance.direction < 0 && !isFacingRight)
         {
             isFacingRight = !isFacingRight;
@@ -341,9 +342,17 @@ public class PlayerController : MonoBehaviour
     private IEnumerator ResetKnockback()
     {
         // Wait for a duration before resetting isKnockedBack flag
-        yield return new WaitForSeconds(0.5f); // Adjust the duration as needed
-
+        yield return new WaitForSeconds(life * 0.02f); // Adjust the duration as needed
+        this.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
         // Reset isKnockedBack flag
         isKnockedBack = false;
+        canMove = true;
+        canFlip = true;
+    }
+
+    public void ResetLife()
+    {
+        life = 0;
+        rb.velocity = new Vector2(0, 0);
     }
 }

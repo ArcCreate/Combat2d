@@ -11,6 +11,7 @@ public class Respawn : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             collision.rigidbody.position = respawnPoint.position;
+            collision.gameObject.SendMessage("ResetLife");
         }
     }
 }

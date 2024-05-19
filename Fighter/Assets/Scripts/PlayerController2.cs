@@ -36,6 +36,7 @@ public class PlayerController2 : MonoBehaviour
     private float attackRadius;
     private int attackDamage;
     private bool isKnockedBack;
+    private int life;
 
     // animation variables
     private bool isRunning = false;
@@ -98,7 +99,7 @@ public class PlayerController2 : MonoBehaviour
         }
 
         // direction
-        if (canFlip && canMove)
+        if (canFlip)
         {
             if (isFacingRight && movementDirection < 0)
             {
@@ -165,6 +166,7 @@ public class PlayerController2 : MonoBehaviour
         // jumping
         if ((Input.GetButtonDown("Jump_2") && canMove && canJump))
         {
+            Debug.Log("Jump button clicked");
             rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
             jumpLeft--;
         }
@@ -172,12 +174,14 @@ public class PlayerController2 : MonoBehaviour
         // dashing
         if ((Input.GetButtonDown("Dash_2")) && Time.time >= (lastDash + dashCooldown) && movementDirection != 0)
         {
+            Debug.Log("Dash button clicked");
             AttemptToDash();
         }
 
         // check attacking
         if (Input.GetButtonDown("Fire1_2") && !isAttacking1 && isGround)
         {
+            Debug.Log("Attack1 button clicked on ground");
             box = A1Hitbox;
             attackRadius = attack1Radius;
             isAttacking1 = true;
@@ -185,6 +189,7 @@ public class PlayerController2 : MonoBehaviour
         }
         else if (Input.GetButtonDown("Fire1_2") && !isAttacking1 && !isGround && airAttack == 1)
         {
+            Debug.Log("Air Attack button clicked");
             airAttack--;
             canAirAttack = true;
             attackRadius = airAttackRadius;
@@ -192,8 +197,9 @@ public class PlayerController2 : MonoBehaviour
         }
         if (Input.GetButtonDown("Fire2_2") && !isAttacking2 && isGround && Time.time >= (lastAttack2Time + attack2Cooldown))
         {
-            box = A2Hitbox;
-            attackRadius = attack2Radius;
+            Debug.Log("Attack2 button clicked on ground");
+            box = A3Hitbox;
+            attackRadius = attack3Radius;
             isAttacking2 = true;
             isAttacking1 = false;
             lastAttack2Time = Time.time; // Update the last attack time
@@ -244,6 +250,11 @@ public class PlayerController2 : MonoBehaviour
             if (obj.gameObject != this.gameObject)
             {
                 obj.transform.SendMessage("Damaged", dg);
+
+                if (!isGround)
+                {
+                    jumpLeft++;
+                }
             }
             else
             {
@@ -259,7 +270,6 @@ public class PlayerController2 : MonoBehaviour
 
     public void chainedHitbox()
     {
-        Debug.Log("chain function");
         box = A2Hitbox;
         attackRadius = attack2Radius;
         isAttacking1 = true;
@@ -303,11 +313,10 @@ public class PlayerController2 : MonoBehaviour
 
     public void Damaged(int damage)
     {
-        Debug.Log("Player 2 is hit");
-
+        life += damage;
         // Apply knockback force
-        rb.velocity = new Vector2(damage * 2 * PlayerController.instance.direction, 5f);
-
+        rb.velocity = new Vector2(life % 100 * PlayerController.instance.direction, life % 100);
+        this.gameObject.GetComponent<SpriteRenderer>().color = Color.grey;
         // Set isKnockedBack flag to true
         isKnockedBack = true;
         if (PlayerController.instance.direction < 0 && !isFacingRight)
@@ -336,9 +345,16 @@ public class PlayerController2 : MonoBehaviour
     private IEnumerator ResetKnockback()
     {
         // Wait for a duration before resetting isKnockedBack flag
-        yield return new WaitForSeconds(0.5f); // Adjust the duration as needed
-
+        yield return new WaitForSeconds(life * 0.02f); // Adjust the duration as needed
+        this.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
         // Reset isKnockedBack flag
         isKnockedBack = false;
+    }
+
+    public void ResetLife()
+    {
+        life = 0;
+        rb.velocity = new Vector2(0, 0);
+
     }
 }
