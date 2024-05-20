@@ -31,7 +31,7 @@ public class idleScript : StateMachineBehaviour
             case 2:
                 if (PlayerController2.instance.isAttacking1)
                 {
-                    PlayerController2.instance.animator.Play("Fire_A1");
+                    PlayerController2.instance.animator.Play("FireA1");
                     PlayerController2.instance.isAttacking1 = false;
                 }
                 if (PlayerController2.instance.isAttacking2)

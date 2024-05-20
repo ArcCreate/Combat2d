@@ -25,16 +25,14 @@ AnimationClip:
     - time: 0.083333336
       value: {fileID: 21300000, guid: 016672fdb5e5fd6489ca2b773d5985fa, type: 3}
     - time: 0.16666667
-      value: {fileID: 21300000, guid: 5faf1a0e6933f6c448046e15d971d5b4, type: 3}
-    - time: 0.25
       value: {fileID: 21300000, guid: 5a950b07a085818478bf0887b573c166, type: 3}
-    - time: 0.33333334
+    - time: 0.25
       value: {fileID: 21300000, guid: 36e8d3d6dda36874a94ce15511cc4512, type: 3}
-    - time: 0.41666666
+    - time: 0.33333334
       value: {fileID: 21300000, guid: 66bca57dd9f25d246882f1e9c610ec57, type: 3}
-    - time: 0.5
+    - time: 0.41666666
       value: {fileID: 21300000, guid: 1ffeb50ec374b1145b37c20dbc291816, type: 3}
-    - time: 0.5833333
+    - time: 0.5
       value: {fileID: 21300000, guid: 54089e6dbbc075e4d9ddf4f9030f3ac8, type: 3}
     attribute: m_Sprite
     path: 
@@ -60,7 +58,6 @@ AnimationClip:
     pptrCurveMapping:
     - {fileID: 21300000, guid: 5a402e6d9f7b52a4499831cb0ae31f82, type: 3}
     - {fileID: 21300000, guid: 016672fdb5e5fd6489ca2b773d5985fa, type: 3}
-    - {fileID: 21300000, guid: 5faf1a0e6933f6c448046e15d971d5b4, type: 3}
     - {fileID: 21300000, guid: 5a950b07a085818478bf0887b573c166, type: 3}
     - {fileID: 21300000, guid: 36e8d3d6dda36874a94ce15511cc4512, type: 3}
     - {fileID: 21300000, guid: 66bca57dd9f25d246882f1e9c610ec57, type: 3}
@@ -71,7 +68,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.6666666
+    m_StopTime: 0.5833333
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -91,31 +88,24 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.083333336
-    functionName: MovingWhileAttack
+  - time: 0
+    functionName: DisableMove
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.16666667
+  - time: 0
     functionName: chainedHitbox
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.41666666
+  - time: 0.33333334
     functionName: CheckAttackHitbox
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 5
-    messageOptions: 0
-  - time: 0.5833333
-    functionName: MovingWhileAttack
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
     messageOptions: 0

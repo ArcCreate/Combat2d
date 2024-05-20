@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,7 +20,7 @@ public class PlayerController2 : MonoBehaviour
     public bool canMove;
     public bool canAirAttack;
     public float movementDirection;
-    public float attack2Cooldown = 0.5f; // Cooldown time for Attack 2
+    public float attack3Cooldown = 0.5f; // Cooldown time for Attack 3
     public float attack1Radius, attack2Radius, airAttackRadius, attack3Radius;
 
     // private variables
@@ -32,7 +33,7 @@ public class PlayerController2 : MonoBehaviour
     private float dashTimeLeft;
     private float lastDash = -100f;
     private int airAttack = 1;
-    private float lastAttack2Time = -100f; // Tracks the last time Attack 2 was performed
+    private float lastAttack3Time = -100f; // Tracks the last time Attack 3 was performed
     private float attackRadius;
     private int attackDamage;
     private bool isKnockedBack;
@@ -48,7 +49,7 @@ public class PlayerController2 : MonoBehaviour
     public LayerMask ground;
     public TrailRenderer trailRenderer;
     public static PlayerController2 instance;
-    public Transform A1Hitbox, A2Hitbox, AAHitbox, A3Hitbox;
+    public Transform A1Hitbox, A2Hitbox, AAHitbox, A3hitbox;
     public LayerMask damageable;
     private Transform box;
     public ParticleSystem dust;
@@ -166,7 +167,6 @@ public class PlayerController2 : MonoBehaviour
         // jumping
         if ((Input.GetButtonDown("Jump_2") && canMove && canJump))
         {
-            Debug.Log("Jump button clicked");
             rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
             jumpLeft--;
         }
@@ -174,14 +174,13 @@ public class PlayerController2 : MonoBehaviour
         // dashing
         if ((Input.GetButtonDown("Dash_2")) && Time.time >= (lastDash + dashCooldown) && movementDirection != 0)
         {
-            Debug.Log("Dash button clicked");
             AttemptToDash();
         }
 
         // check attacking
         if (Input.GetButtonDown("Fire1_2") && !isAttacking1 && isGround)
         {
-            Debug.Log("Attack1 button clicked on ground");
+            Debug.Log("one attack");
             box = A1Hitbox;
             attackRadius = attack1Radius;
             isAttacking1 = true;
@@ -189,20 +188,18 @@ public class PlayerController2 : MonoBehaviour
         }
         else if (Input.GetButtonDown("Fire1_2") && !isAttacking1 && !isGround && airAttack == 1)
         {
-            Debug.Log("Air Attack button clicked");
             airAttack--;
             canAirAttack = true;
             attackRadius = airAttackRadius;
             box = AAHitbox;
         }
-        if (Input.GetButtonDown("Fire2_2") && !isAttacking2 && isGround && Time.time >= (lastAttack2Time + attack2Cooldown))
+        if (Input.GetButtonDown("Fire2_2") && !isAttacking2 && isGround && Time.time >= (lastAttack3Time + attack3Cooldown))
         {
-            Debug.Log("Attack2 button clicked on ground");
-            box = A3Hitbox;
+            box = A3hitbox;
             attackRadius = attack3Radius;
             isAttacking2 = true;
             isAttacking1 = false;
-            lastAttack2Time = Time.time; // Update the last attack time
+            lastAttack3Time = Time.time; // Update the last attack time
         }
     }
 
@@ -225,14 +222,17 @@ public class PlayerController2 : MonoBehaviour
         }
     }
 
-    public void MovingWhileAttack()
+    public void EnableMove()
     {
         if (!canMove)
         {
             canMove = true;
             canFlip = true;
         }
-        else
+    }
+    public void DisableMove()
+    {
+        if (canMove)
         {
             canMove = false;
             canFlip = false;
@@ -262,7 +262,7 @@ public class PlayerController2 : MonoBehaviour
             }
         }
 
-        if (detectedObjects.Length > 0+me)
+        if (detectedObjects.Length > 0 + me)
         {
             CameraShake.instance.Shake(dg / 2.0f, 0.25f);
         }
@@ -290,8 +290,8 @@ public class PlayerController2 : MonoBehaviour
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         Gizmos.DrawWireSphere(A2Hitbox.position, attack2Radius);
         Gizmos.DrawWireSphere(A1Hitbox.position, attack1Radius);
-        Gizmos.DrawWireSphere(A3Hitbox.position, attack3Radius);
         Gizmos.DrawWireSphere(AAHitbox.position, airAttackRadius);
+        Gizmos.DrawWireSphere(A3hitbox.position, attack3Radius);
     }
 
     private void UpdateDashSlider()
@@ -316,9 +316,10 @@ public class PlayerController2 : MonoBehaviour
         life += damage;
         // Apply knockback force
         rb.velocity = new Vector2(life % 100 * PlayerController.instance.direction, life % 100);
-        this.gameObject.GetComponent<SpriteRenderer>().color = Color.grey;
+
         // Set isKnockedBack flag to true
         isKnockedBack = true;
+        this.gameObject.GetComponent<SpriteRenderer>().color = Color.grey;
         if (PlayerController.instance.direction < 0 && !isFacingRight)
         {
             isFacingRight = !isFacingRight;
@@ -349,12 +350,13 @@ public class PlayerController2 : MonoBehaviour
         this.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
         // Reset isKnockedBack flag
         isKnockedBack = false;
+        canMove = true;
+        canFlip = true;
     }
 
     public void ResetLife()
     {
         life = 0;
         rb.velocity = new Vector2(0, 0);
-
     }
 }
