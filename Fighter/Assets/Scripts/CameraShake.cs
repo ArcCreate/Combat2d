@@ -8,7 +8,7 @@ public class CameraShake : MonoBehaviour
 {
     public static CameraShake instance {  get; private set; }
     private CinemachineVirtualCamera cm;
-    private float timer;
+    public float timer;
     private void Awake()
     {
         instance = this;

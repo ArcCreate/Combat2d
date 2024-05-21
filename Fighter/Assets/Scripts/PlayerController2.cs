@@ -186,7 +186,7 @@ public class PlayerController2 : MonoBehaviour
             isAttacking1 = true;
             isAttacking2 = false;
         }
-        else if (Input.GetButtonDown("Fire1_2") && !isAttacking1 && !isGround && airAttack == 1)
+        if ((Input.GetButtonDown("Fire1_2") || Input.GetButtonDown("Fire2_2")) && !isAttacking1 && !isGround && airAttack == 1)
         {
             airAttack--;
             canAirAttack = true;
@@ -315,7 +315,7 @@ public class PlayerController2 : MonoBehaviour
     {
         life += damage;
         // Apply knockback force
-        rb.velocity = new Vector2(life % 100 * PlayerController.instance.direction, life % 100);
+        rb.velocity = new Vector2(life * PlayerController.instance.direction, life);
 
         // Set isKnockedBack flag to true
         isKnockedBack = true;

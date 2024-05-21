@@ -185,7 +185,7 @@ public class PlayerController : MonoBehaviour
             isAttacking1 = true;
             isAttacking2 = false;
         }
-        else if (Input.GetButtonDown("Fire1_1") && !isAttacking1 && !isGround && airAttack == 1)
+        if ((Input.GetButtonDown("Fire1_1") || Input.GetButtonDown("Fire2_1")) && !isAttacking1 && !isGround && airAttack == 1)
         {
             airAttack--;
             canAirAttack = true;
@@ -274,10 +274,10 @@ public class PlayerController : MonoBehaviour
 
     private void Animate()
     {
+        animator.SetBool("AirAttack", canAirAttack);
         animator.SetBool("Running", isRunning);
         animator.SetBool("isGrounded", isGround);
         animator.SetFloat("yVelocity", rb.velocity.y);
-        animator.SetBool("AirAttack", canAirAttack);
         animator.SetBool("Hit", isKnockedBack);
     }
 
@@ -311,7 +311,7 @@ public class PlayerController : MonoBehaviour
     {
         life += damage;
         // Apply knockback force
-        rb.velocity = new Vector2(life % 100 * PlayerController2.instance.direction, life % 100);
+        rb.velocity = new Vector2(life * PlayerController2.instance.direction, life);
 
         // Set isKnockedBack flag to true
         isKnockedBack = true;

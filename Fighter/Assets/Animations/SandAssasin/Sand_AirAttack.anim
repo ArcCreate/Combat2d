@@ -21,12 +21,8 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 21300000, guid: 79959fb33bb2cd84b8b711d76c387978, type: 3}
-    - time: 0.05
-      value: {fileID: 21300000, guid: b85171878e8c1574b99c446531b3399f, type: 3}
-    - time: 0.1
       value: {fileID: 21300000, guid: d7bfbe4fd2f50a14eb9bec5db55a54b2, type: 3}
-    - time: 0.15
+    - time: 0.05
       value: {fileID: 21300000, guid: e744260737d25aa4eb58160eaf227938, type: 3}
     attribute: m_Sprite
     path: 
@@ -50,8 +46,6 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 79959fb33bb2cd84b8b711d76c387978, type: 3}
-    - {fileID: 21300000, guid: b85171878e8c1574b99c446531b3399f, type: 3}
     - {fileID: 21300000, guid: d7bfbe4fd2f50a14eb9bec5db55a54b2, type: 3}
     - {fileID: 21300000, guid: e744260737d25aa4eb58160eaf227938, type: 3}
   m_AnimationClipSettings:
@@ -59,7 +53,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.2
+    m_StopTime: 0.1
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -86,7 +80,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.1
+  - time: 0.05
     functionName: CheckAttackHitbox
     data: 
     objectReferenceParameter: {fileID: 0}
