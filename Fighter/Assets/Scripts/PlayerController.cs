@@ -55,6 +55,7 @@ public class PlayerController : MonoBehaviour
     public ParticleSystem dust;
     public ParticleSystem landDust;
     public Slider slider;
+    public HealthBar healthBar;
 
     private void Awake()
     {
@@ -129,6 +130,9 @@ public class PlayerController : MonoBehaviour
 
         // Update the slider
         UpdateDashSlider();
+
+        //show damage
+        healthBar.setDamage(life);
     }
 
     private void FixedUpdate()
