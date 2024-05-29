@@ -19,12 +19,34 @@ public class idleScript : StateMachineBehaviour
             case 1:
                 if (PlayerController.instance.isAttacking1)
                 {
-                    PlayerController.instance.animator.Play("Sand_A1");
+                    switch (PlayerController.instance.characterNumber)
+                    {
+                        case 1:
+                            PlayerController.instance.animator.Play("Sand_A1");
+                            break;
+                        case 2:
+                            PlayerController.instance.animator.Play("FireA1");
+                            break;
+                        default:
+                            Debug.Log("Set character number in player controller script");
+                            break;
+                    }
                     PlayerController.instance.isAttacking1 = false;
                 }
                 if (PlayerController.instance.isAttacking2)
                 {
-                    PlayerController.instance.animator.Play("Sand_A3");
+                    switch (PlayerController.instance.characterNumber)
+                    {
+                        case 1:
+                            PlayerController.instance.animator.Play("Sand_A3");
+                            break;
+                        case 2:
+                            PlayerController.instance.animator.Play("Fire_A3");
+                            break;
+                        default:
+                            Debug.Log("Set character number in player controller script");
+                            break;
+                    }
                     PlayerController.instance.isAttacking2 = false;
                 }
                 break;

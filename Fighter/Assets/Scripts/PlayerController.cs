@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     // public variables
+    public int characterNumber;
     public float movementSpeed = 10;
     public float jumpHeight = 16.0f;
     public float groundCheckRadius;
@@ -65,6 +66,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ground = LayerMask.GetMask("Ground");
         rb = GetComponent<Rigidbody2D>();
         jumpLeft = jumpCount;
 
@@ -184,6 +186,7 @@ public class PlayerController : MonoBehaviour
         // check attacking
         if (Input.GetButtonDown("Fire1_1") && !isAttacking1 && isGround)
         {
+            Debug.Log("attack1");
             box = A1Hitbox;
             attackRadius = attack1Radius;
             isAttacking1 = true;
@@ -358,5 +361,25 @@ public class PlayerController : MonoBehaviour
     {
         life = 0;
         rb.velocity = new Vector2(0, 0);
+    }
+
+
+
+    public void EnableMove()
+    {
+        if (!canMove)
+        {
+            canMove = true;
+            canFlip = true;
+        }
+    }
+    public void DisableMove()
+    {
+        if (canMove)
+        {
+            canMove = false;
+            canFlip = false;
+            rb.velocity = new Vector2(movementDirection * 0, 0f);
+        }
     }
 }
