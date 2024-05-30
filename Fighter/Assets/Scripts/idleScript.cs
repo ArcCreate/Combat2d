@@ -36,12 +36,12 @@ public class idleScript : StateMachineBehaviour
             case 2:
                 if (PlayerController2.instance.isAttacking1)
                 {
-                    PlayerController2.instance.animator.Play("FireA1");
+                    PlayerController2.instance.animator.Play(attack1Name);
                     PlayerController2.instance.isAttacking1 = false;
                 }
                 if (PlayerController2.instance.isAttacking2)
                 {
-                    PlayerController2.instance.animator.Play("Fire_A3");
+                    PlayerController2.instance.animator.Play(attack2Name);
                     PlayerController2.instance.isAttacking2 = false;
                 }
                 break;

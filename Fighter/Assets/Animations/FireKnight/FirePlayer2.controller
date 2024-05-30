@@ -354,6 +354,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 2
+  attack1Name: FireA1
+  attack2Name: Fire_A3
 --- !u!1101 &-3392726596878210350
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -395,6 +397,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextAttack: Fire_A2
+  attack2: Fire_A3
   playerNumber: 2
 --- !u!1101 &-2203195478411895297
 AnimatorStateTransition:
@@ -434,6 +437,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 2
+  attack1Name: FireA1
+  attack2Name: Fire_A3
 --- !u!1101 &-1724587863910776998
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -895,6 +900,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextAttack: Fire_A1
+  attack2: Fire_A3
   playerNumber: 2
 --- !u!1101 &8533617737026504713
 AnimatorStateTransition:
