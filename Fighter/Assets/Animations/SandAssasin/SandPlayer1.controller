@@ -121,6 +121,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 1
+  attack1Name: Sand_A1
+  attack2Name: Sand_A3
 --- !u!1102 &-6357412683864015112
 AnimatorState:
   serializedVersion: 6
@@ -333,6 +335,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextAttack: Sand_A2
+  attack2: Sand_A3
   playerNumber: 1
 --- !u!1101 &-3670734981106615074
 AnimatorStateTransition:
@@ -509,6 +512,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextAttack: Sand_Idle
+  attack2: Sand_A3
   playerNumber: 1
 --- !u!114 &-96852166731492905
 MonoBehaviour:
@@ -523,6 +527,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 1
+  attack1Name: Sand_A1
+  attack2Name: Sand_A3
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0
@@ -739,6 +745,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextAttack: Sand_A1 0
+  attack2: Sand_A3
   playerNumber: 1
 --- !u!114 &4505430883050553467
 MonoBehaviour:

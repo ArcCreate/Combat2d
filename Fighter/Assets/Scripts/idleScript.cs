@@ -5,6 +5,8 @@ using UnityEngine;
 public class idleScript : StateMachineBehaviour
 {
     public int playerNumber;
+    public string attack1Name;
+    public string attack2Name;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     //{
@@ -16,40 +18,21 @@ public class idleScript : StateMachineBehaviour
     {
         switch (playerNumber)
         {
+            //player 1
             case 1:
                 if (PlayerController.instance.isAttacking1)
                 {
-                    switch (PlayerController.instance.characterNumber)
-                    {
-                        case 1:
-                            PlayerController.instance.animator.Play("Sand_A1");
-                            break;
-                        case 2:
-                            PlayerController.instance.animator.Play("FireA1");
-                            break;
-                        default:
-                            Debug.Log("Set character number in player controller script");
-                            break;
-                    }
+                    PlayerController.instance.animator.Play(attack1Name);
                     PlayerController.instance.isAttacking1 = false;
                 }
                 if (PlayerController.instance.isAttacking2)
                 {
-                    switch (PlayerController.instance.characterNumber)
-                    {
-                        case 1:
-                            PlayerController.instance.animator.Play("Sand_A3");
-                            break;
-                        case 2:
-                            PlayerController.instance.animator.Play("Fire_A3");
-                            break;
-                        default:
-                            Debug.Log("Set character number in player controller script");
-                            break;
-                    }
+                    PlayerController.instance.animator.Play(attack2Name);
                     PlayerController.instance.isAttacking2 = false;
                 }
                 break;
+
+            //player 2
             case 2:
                 if (PlayerController2.instance.isAttacking1)
                 {

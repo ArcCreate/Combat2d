@@ -5,6 +5,7 @@ using UnityEngine;
 public class attackTransitionScript : StateMachineBehaviour
 {
     public string nextAttack;
+    public string attack2;
     public int playerNumber;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -26,7 +27,7 @@ public class attackTransitionScript : StateMachineBehaviour
                 }
                 if (PlayerController.instance.isAttacking2)
                 {
-                    PlayerController.instance.animator.Play("Sand_A3");
+                    PlayerController.instance.animator.Play(attack2);
                     PlayerController.instance.isAttacking2 = false;
                 }
                 break;
@@ -39,7 +40,7 @@ public class attackTransitionScript : StateMachineBehaviour
                 }
                 if (PlayerController2.instance.isAttacking2)
                 {
-                    PlayerController2.instance.animator.Play("Fire_A3");
+                    PlayerController2.instance.animator.Play(attack2);
                     PlayerController2.instance.isAttacking2 = false;
                 }
                 break;
