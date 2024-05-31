@@ -18,11 +18,13 @@ public class CharacterSelection : MonoBehaviour
         player2Selection = PlayerPrefs.GetInt("player2Selection");
         Debug.Log(player1Selection);
         Debug.Log(player2Selection);
+        choose();
     }
 
     public void choose()
     {
-        player1List[player1Selection].SetActive(true);
-        player2List[player2Selection].SetActive(true);
+        Debug.Log(player1List[player1Selection].gameObject);
+        player1List[player1Selection].gameObject.SetActive(true);
+        //player2List[player2Selection].SetActive(true);
     }
 }
