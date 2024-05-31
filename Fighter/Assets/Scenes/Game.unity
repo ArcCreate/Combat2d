@@ -850,7 +850,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29650c04f878e434a886f678b29f67ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1List: []
+  player1List:
+  - {fileID: 248555450}
+  - {fileID: 1077484361}
+  - {fileID: 82852871}
+  - {fileID: 1298545752}
+  - {fileID: 1851243841}
   player2List: []
 --- !u!1 &202712545
 GameObject:

@@ -931,25 +931,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1931503889}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1931503890}
+        m_TargetAssemblyTypeName: SkinManager, Assembly-CSharp
+        m_MethodName: Back2
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1931503889}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1129,11 +1117,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 1079791958}
+  spriteRenderer2: {fileID: 951374068}
   skins:
-  - {fileID: 21300000, guid: 4af57374dcd0fb44da7b7cffa213faf1, type: 3}
   - {fileID: 21300000, guid: b182e4ca00e8b704695ed73b37575437, type: 3}
   - {fileID: 21300000, guid: 0ea907ab1b6f05e409f39981e3e945d2, type: 3}
   - {fileID: 21300000, guid: d6db2172a2e195641ba9219afa2886ae, type: 3}
+  - {fileID: 21300000, guid: 4af57374dcd0fb44da7b7cffa213faf1, type: 3}
+  - {fileID: 21300000, guid: c225c23bda5e4a24bbd62fcd49684220, type: 3}
+  skins2:
+  - {fileID: 21300000, guid: b182e4ca00e8b704695ed73b37575437, type: 3}
+  - {fileID: 21300000, guid: 0ea907ab1b6f05e409f39981e3e945d2, type: 3}
+  - {fileID: 21300000, guid: d6db2172a2e195641ba9219afa2886ae, type: 3}
+  - {fileID: 21300000, guid: 4af57374dcd0fb44da7b7cffa213faf1, type: 3}
   - {fileID: 21300000, guid: c225c23bda5e4a24bbd62fcd49684220, type: 3}
 --- !u!4 &1931503891
 Transform:
@@ -1365,25 +1360,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1931503889}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1931503890}
+        m_TargetAssemblyTypeName: SkinManager, Assembly-CSharp
+        m_MethodName: Next2
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1931503889}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
