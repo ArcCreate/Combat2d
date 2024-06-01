@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     // public variables
-    public int characterNumber;
     public float movementSpeed = 10;
     public float jumpHeight = 16.0f;
     public float groundCheckRadius;
