@@ -483,7 +483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8de4403f7c71646468959a28fbfe8148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 18
+  movementSpeed: 14
   jumpHeight: 20
   groundCheckRadius: 0.7
   jumpCount: 1
@@ -1012,7 +1012,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8de4403f7c71646468959a28fbfe8148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 15
+  movementSpeed: 12
   jumpHeight: 20
   groundCheckRadius: 0.7
   jumpCount: 1
@@ -1471,7 +1471,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &248555451
 Transform:
   m_ObjectHideFlags: 0
@@ -1655,7 +1655,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f44cff20ee6368409635f310c05af55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 15
+  movementSpeed: 12
   jumpHeight: 20
   groundCheckRadius: 0.7
   jumpCount: 1
@@ -2864,7 +2864,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.5, z: -20}
+  m_LocalPosition: {x: -5, y: 2.5, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3643,7 +3643,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8de4403f7c71646468959a28fbfe8148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 18
+  movementSpeed: 12
   jumpHeight: 20
   groundCheckRadius: 0.9
   jumpCount: 1
@@ -3887,7 +3887,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8de4403f7c71646468959a28fbfe8148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 18
+  movementSpeed: 16
   jumpHeight: 20
   groundCheckRadius: 0.7
   jumpCount: 1
@@ -4794,7 +4794,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f44cff20ee6368409635f310c05af55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 18
+  movementSpeed: 12
   jumpHeight: 20
   groundCheckRadius: 0.9
   jumpCount: 1
@@ -5700,7 +5700,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f44cff20ee6368409635f310c05af55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 18
+  movementSpeed: 16
   jumpHeight: 20
   groundCheckRadius: 0.7
   jumpCount: 1
@@ -6258,7 +6258,7 @@ Transform:
   m_GameObject: {fileID: 1389964067}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.5, z: -20}
+  m_LocalPosition: {x: -5, y: 2.5, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12019,7 +12019,7 @@ MonoBehaviour:
   groundCheck: {fileID: 910720305}
   ground:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   trailRenderer: {fileID: 1582515818}
   A1Hitbox: {fileID: 1481038328}
   A2Hitbox: {fileID: 630160859}
@@ -12027,7 +12027,7 @@ MonoBehaviour:
   A3hitbox: {fileID: 2058323857}
   damageable:
     serializedVersion: 2
-    m_Bits: 576
+    m_Bits: 640
   dust: {fileID: 2131776650}
   landDust: {fileID: 1432243055}
   slider: {fileID: 1004028764}
@@ -12458,7 +12458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f44cff20ee6368409635f310c05af55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 18
+  movementSpeed: 14
   jumpHeight: 20
   groundCheckRadius: 0.7
   jumpCount: 1
@@ -12681,7 +12681,7 @@ Transform:
   m_GameObject: {fileID: 1955041779}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -3.7747257, y: -0.50329673, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -101,14 +101,14 @@ AnimationClip:
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
-    intParameter: 3
+    intParameter: 2
     messageOptions: 0
   - time: 0.25
     functionName: CheckAttackHitbox
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
-    intParameter: 0
+    intParameter: 7
     messageOptions: 0
   - time: 0.33333334
     functionName: EnableMove

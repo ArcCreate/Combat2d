@@ -87,17 +87,17 @@ AnimationClip:
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
-    intParameter: 4
+    intParameter: 1
     messageOptions: 0
   - time: 0
-    functionName: MovingWhileAttack
+    functionName: DisableMove
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.26666668
-    functionName: MovingWhileAttack
+    functionName: EnableMove
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
